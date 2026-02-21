@@ -1,7 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 export default function Login() {
   const [phone, setPhone] = useState("");
@@ -13,6 +15,7 @@ export default function Login() {
   async function requestOtp() {
     setLoading(true);
     setMessage("");
+    const supabase = getSupabase();
     const { error } = await supabase.auth.signInWithOtp({
       phone,
     });
@@ -28,6 +31,7 @@ export default function Login() {
   async function verifyOtp() {
     setLoading(true);
     setMessage("");
+    const supabase = getSupabase();
     const { data, error } = await supabase.auth.verifyOtp({
       phone,
       token: otp,
